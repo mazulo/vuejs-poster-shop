@@ -1,10 +1,12 @@
 var PRICE = 9.99;
+var SPLIT_EVERY = 10;
 
 new Vue({
     el: '#app',
     data: {
         total: 0,
         items: [],
+        results: [],
         cart: [],
         search: '',
         lastSearch: '',
@@ -49,18 +51,37 @@ new Vue({
             this.$http.get(`/search/${this.search}`)
             .then(response => {
                 this.lastSearch = this.search;
-                this.items = response.data;
+                this.results = response.data;
+                this.appendItems();
                 this.loading = false;
             })
-        }
+        },
+        appendItems: function() {
+            if (this.items.length < this.results.length) {
+                var append = this.results.slice(this.items.length, this.items.length + SPLIT_EVERY);
+                this.items = this.items.concat(append);
+            }
+        },
     },
     filters: {
         currency: function(price) {
             return `$${price.toFixed(2)}`;
         }
     },
+    computed: {
+        noMoreItems: function() {
+            return this.items.length > 0 && this.items.length === this.results.length;
+        },
+    },
     mounted: function() {
         this.search = 'anime';
         this.onSubmit();
+
+        var vueInstance = this;
+        var elem = document.getElementById('product-list-bottom');
+        var watcher = scrollMonitor.create(elem);
+        watcher.enterViewport(function() {
+            vueInstance.appendItems();
+        });
     }
 });
