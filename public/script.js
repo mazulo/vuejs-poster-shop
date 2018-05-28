@@ -8,6 +8,8 @@ new Vue({
         cart: [],
         search: '',
         lastSearch: '',
+        loading: false,
+        price: PRICE,
     },
     methods: {
         addItem: function(index) {
@@ -42,10 +44,13 @@ new Vue({
             }
         },
         onSubmit: function() {
+            this.items = [];
+            this.loading = true;
             this.$http.get(`/search/${this.search}`)
             .then(response => {
                 this.lastSearch = this.search;
                 this.items = response.data;
+                this.loading = false;
             })
         }
     },
@@ -53,5 +58,9 @@ new Vue({
         currency: function(price) {
             return `$${price.toFixed(2)}`;
         }
+    },
+    mounted: function() {
+        this.search = 'anime';
+        this.onSubmit();
     }
 });
