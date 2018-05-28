@@ -24,9 +24,19 @@
     </div>
     <div class="main">
         <div class="products">
-            <div v-for="(item, index) in items">
-                <h4 class="product-title">{{ item.title }}</h4>
-                <button v-on:click="addItem(index)" class="add-to-cart btn" >Add to cart</button>
+            <div v-if="lastSearch" class="search-results">
+                Found {{ items.length }} results for search term {{ lastSearch }}
+            </div>
+            <div v-for="(item, index) in items" class="product">
+                <div>
+                    <div class="product-image">
+                        <img v-bind:src="item.link" v-bind:alt="item.title">
+                    </div>
+                </div>
+                <div>
+                    <h4 class="product-title">{{ item.title }}</h4>
+                    <button v-on:click="addItem(index)" class="add-to-cart btn" >Add to cart</button>
+                </div>
             </div>
         </div>
         <div class="cart">

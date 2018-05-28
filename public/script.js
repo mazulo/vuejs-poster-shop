@@ -4,13 +4,10 @@ new Vue({
     el: '#app',
     data: {
         total: 0,
-        items: [
-            { id: 1, title: "Title 1" },
-            { id: 2, title: "Title 2" },
-            { id: 3, title: "Title 3" },
-        ],
+        items: [],
         cart: [],
         search: '',
+        lastSearch: '',
     },
     methods: {
         addItem: function(index) {
@@ -47,9 +44,8 @@ new Vue({
         onSubmit: function() {
             this.$http.get(`/search/${this.search}`)
             .then(response => {
-                response.body.map(data => {
-                    console.log(data.link);
-                })
+                this.lastSearch = this.search;
+                this.items = response.data;
             })
         }
     },
