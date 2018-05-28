@@ -1,11 +1,18 @@
 new Vue({
     el: '#app',
     data: {
-        total: 1900,
+        total: 0,
+        items: [
+            { title: "Title 1" },
+            { title: "Title 2" },
+            { title: "Title 3" },
+        ],
+        cart: [],
     },
     methods: {
-        addItem: function() {
-            this.total += 1.599;
+        addItem: function(index) {
+            this.total += 9.99;
+            this.cart.push(this.items[index]);
         }
     }
 });
