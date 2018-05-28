@@ -30,7 +30,18 @@ new Vue({
                     price: PRICE,
                 })
             }
-        }
+        },
+        inc: function(item) {
+            item.qty++;
+            this.total += PRICE;
+        },
+        dec: function(item) {
+            item.qty--;
+            this.total -= PRICE;
+            if (item.qty <= 0) {
+                this.cart = this.cart.filter(i => i.id !== item.id);
+            }
+        },
     },
     filters: {
         currency: function(price) {
