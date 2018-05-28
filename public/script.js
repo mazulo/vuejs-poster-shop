@@ -10,6 +10,7 @@ new Vue({
             { id: 3, title: "Title 3" },
         ],
         cart: [],
+        search: '',
     },
     methods: {
         addItem: function(index) {
@@ -20,6 +21,7 @@ new Vue({
                 if (this.cart[i].id === item.id) {
                     found = true;
                     this.cart[i].qty++;
+                    break;
                 }
             }
             if (!found) {
@@ -42,6 +44,14 @@ new Vue({
                 this.cart = this.cart.filter(i => i.id !== item.id);
             }
         },
+        onSubmit: function() {
+            this.$http.get(`/search/${this.search}`)
+            .then(response => {
+                response.body.map(data => {
+                    console.log(data.link);
+                })
+            })
+        }
     },
     filters: {
         currency: function(price) {
