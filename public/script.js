@@ -46,15 +46,17 @@ new Vue({
             }
         },
         onSubmit: function() {
-            this.items = [];
-            this.loading = true;
-            this.$http.get(`/search/${this.search}`)
-            .then(response => {
-                this.lastSearch = this.search;
-                this.results = response.data;
-                this.appendItems();
-                this.loading = false;
-            })
+            if (this.search.length) {
+                this.items = [];
+                this.loading = true;
+                this.$http.get(`/search/${this.search}`)
+                .then(response => {
+                    this.lastSearch = this.search;
+                    this.results = response.data;
+                    this.appendItems();
+                    this.loading = false;
+                })
+            }
         },
         appendItems: function() {
             if (this.items.length < this.results.length) {
